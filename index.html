@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEWDAY FILM — 웨딩영상</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ============================================
+       HOME PAGE STYLES
+       수정: 히어로 슬라이드 이미지 URL, 문구
+       ============================================ */
+
+    /* ── Hero Slideshow ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero__slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero__slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero__slide.active {
+      opacity: 1;
+    }
+
+    /* ── 히어로 이미지 교체 영역 ──
+       아래 background-image URL을 원하는 이미지로 교체하세요 */
+    .hero__slide:nth-child(1) {
+      background-image: url('https://images.squarespace-cdn.com/content/v1/66d6aea9d812b707c02b1715/1726220931554-ITOH489SD1LRK9T01PFB/KakaoTalk_20240913_184349402_03.jpg');
+    }
+
+    .hero__slide:nth-child(2) {
+      background-image: url('https://images.squarespace-cdn.com/content/v1/66d6aea9d812b707c02b1715/37bd28ff-aea3-446d-87f0-ae52de014a6b/KakaoTalk_20240913_184349402_08.jpg');
+    }
+
+    .hero__slide:nth-child(3) {
+      background-image: url('https://images.squarespace-cdn.com/content/v1/66d6aea9d812b707c02b1715/176cfb26-a37e-4bf4-ad52-2f710fb46afe/KakaoTalk_20240913_184349402_04.jpg');
+    }
+
+    .hero__slide:nth-child(4) {
+      background-image: url('https://images.squarespace-cdn.com/content/v1/66d6aea9d812b707c02b1715/6667c4d2-85a9-4289-968d-69ca0c6bc3ab/KakaoTalk_20240913_184349402_05.jpg');
+    }
+
+    /* Gradient overlay */
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(14, 13, 11, 0.3) 0%,
+        rgba(14, 13, 11, 0.1) 40%,
+        rgba(14, 13, 11, 0.6) 100%
+      );
+      z-index: 1;
+    }
+
+    /* Center content */
+    .hero__content {
+      position: absolute;
+      bottom: 80px;
+      left: 60px;
+      z-index: 2;
+      animation: heroFadeUp 1.2s ease 0.3s both;
+    }
+
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── 메인 문구 수정 영역 ── */
+    .hero__tagline {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--color-text);
+      margin-bottom: 16px;
+    }
+
+    .hero__tagline em {
+      font-style: normal;
+      color: var(--color-accent);
+    }
+
+    .hero__sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    /* Slide dots */
+    .hero__dots {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+      z-index: 2;
+      display: flex;
+      gap: 10px;
+    }
+
+    .hero__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-muted);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .hero__dot.active {
+      background: var(--color-accent);
+      transform: scale(1.3);
+    }
+
+    /* ── Scroll indicator ── */
+    .hero__scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    .hero__scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--color-accent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleX(1); }
+      50% { transform: scaleX(0.5); transform-origin: left; }
+    }
+
+    /* ── Section Intro ── */
+    .section-intro {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 120px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .section-intro__label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 16px;
+    }
+
+    .section-intro__heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .section-intro__text {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      line-height: 1.9;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent-light);
+      border-bottom: 1px solid var(--color-accent);
+      padding-bottom: 4px;
+      transition: color var(--transition), gap var(--transition);
+    }
+
+    .btn:hover {
+      color: var(--color-accent);
+      gap: 18px;
+    }
+
+    .section-intro__image {
+      position: relative;
+    }
+
+    .section-intro__image img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+    }
+
+    .section-intro__image::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: 20px;
+      bottom: 20px;
+      border: 1px solid var(--color-border);
+      z-index: -1;
+    }
+
+    /* ── Quick Stats ── */
+    .stats {
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: 60px;
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat__num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--color-accent);
+      line-height: 1;
+    }
+
+    .stat__label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-top: 8px;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      padding: 120px 60px;
+      text-align: center;
+    }
+
+    .cta__heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .cta__sub {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      letter-spacing: 0.15em;
+      margin-bottom: 40px;
+    }
+
+    .btn--solid {
+      display: inline-block;
+      border: 1px solid var(--color-accent);
+      padding: 16px 40px;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .btn--solid:hover {
+      background: var(--color-accent);
+      color: var(--color-bg);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero__content {
+        left: 24px;
+        bottom: 100px;
+      }
+
+      .hero__dots { right: 24px; }
+      .hero__scroll { left: 24px; }
+
+      .section-intro {
+        grid-template-columns: 1fr;
+        padding: 60px 24px;
+        gap: 40px;
+      }
+
+      .section-intro__image::before { display: none; }
+
+      .stats {
+        padding: 40px 24px;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .cta { padding: 80px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION (공통 — nav 수정시 모든 페이지에 반영)
+       ============================================ -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">NEWDAY<span>FILM</span></a>
+    <ul class="nav__links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="product.html">Product</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav__hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="nav__mobile" id="mobileMenu">
+    <span class="nav__mobile-close" id="mobileClose">✕</span>
+    <a href="about.html">About</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="product.html">Product</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- ============================================
+         HERO SECTION
+         수정: 슬라이드 이미지는 styles 안 .hero__slide:nth-child() URL
+         문구는 .hero__tagline 내부
+         ============================================ -->
+    <section class="hero">
+      <div class="hero__slides">
+        <div class="hero__slide active"></div>
+        <div class="hero__slide"></div>
+        <div class="hero__slide"></div>
+        <div class="hero__slide"></div>
+      </div>
+
+      <div class="hero__overlay"></div>
+
+      <div class="hero__content">
+        <p class="hero__tagline">당신의 특별한<br><em>하루를 영원히.</em></p>
+        <p class="hero__sub">Wedding Film — Newday Film</p>
+      </div>
+
+      <div class="hero__scroll">
+        <div class="hero__scroll-line"></div>
+        Scroll
+      </div>
+
+      <div class="hero__dots" id="heroDots"></div>
+    </section>
+
+    <!-- ============================================
+         INTRO SECTION
+         수정: 텍스트, 이미지 URL
+         ============================================ -->
+    <section class="section-intro">
+      <div class="section-intro__text-block">
+        <p class="section-intro__label">Wedding Videography</p>
+        <h2 class="section-intro__heading">모든 순간은<br>기억될 가치가 있습니다</h2>
+        <p class="section-intro__text">
+          뉴데이필름은 웨딩 영상 전문 팀입니다.<br>
+          사랑의 이야기 속에서 빛나는 디테일을 포착하고,<br>
+          아름다운 순간을 영원한 기억으로 남겨드립니다.
+        </p>
+        <a href="portfolio.html" class="btn">포트폴리오 보기 →</a>
+      </div>
+
+      <div class="section-intro__image">
+        <!-- 수정: 아래 이미지 src를 원하는 이미지로 교체 -->
+        <img
+          src="https://images.squarespace-cdn.com/content/v1/66d6aea9d812b707c02b1715/176cfb26-a37e-4bf4-ad52-2f710fb46afe/KakaoTalk_20240913_184349402_04.jpg"
+          alt="Wedding film still"
+          loading="lazy"
+        />
+      </div>
+    </section>
+
+    <!-- ============================================
+         STATS
+         수정: 숫자와 라벨
+         ============================================ -->
+    <section class="stats">
+      <div class="stat">
+        <div class="stat__num">13+</div>
+        <div class="stat__label">Years of Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">1000+</div>
+        <div class="stat__label">Weddings Filmed</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">3</div>
+        <div class="stat__label">Camera Packages</div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         CTA SECTION
+         수정: 문구, 버튼 링크
+         ============================================ -->
+    <section class="cta">
+      <h2 class="cta__heading">당신의 특별한 날,<br>함께 하겠습니다.</h2>
+      <p class="cta__sub">지금 바로 문의하세요</p>
+      <a href="contact.html" class="btn--solid">Contact Us</a>
+    </section>
+
+    <!-- ============================================
+         FOOTER (공통)
+         수정: 이메일, 인스타그램 링크
+         ============================================ -->
+    <footer class="footer">
+      <div>
+        <div class="footer__brand">NEWDAY FILM</div>
+        <div class="footer__copy">© 2024 Newday Film. All rights reserved.</div>
+      </div>
+      <div class="footer__newsletter">
+        <div class="footer__newsletter-form">
+          <input type="email" placeholder="이메일 주소" />
+          <button>구독</button>
+        </div>
+        <!-- 수정: 인스타그램 계정명 변경 -->
+        <a href="https://www.instagram.com/newdayfilm/" class="footer__insta" target="_blank">
+          @newdayfilm
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ── Hero Slideshow ──
+    const slides = document.querySelectorAll('.hero__slide');
+    const dotsContainer = document.getElementById('heroDots');
+    let current = 0;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'hero__dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    });
+
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      dotsContainer.children[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dotsContainer.children[current].classList.add('active');
+    }
+
+    setInterval(() => goTo(current + 1), 5000);
+
+    // ── Mobile Menu ──
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.add('open');
+    });
+    document.getElementById('mobileClose').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.remove('open');
+    });
+  </script>
+</body>
+</html>

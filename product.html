@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product — NEWDAY FILM</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ============================================
+       PRODUCT PAGE STYLES
+       수정: 패키지 내용, 가격은 JS productData 배열
+       ============================================ */
+
+    .product-hero {
+      padding: 100px 60px 60px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .product-hero__label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 24px;
+    }
+
+    .product-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.0;
+    }
+
+    /* ── Packages ── */
+    .packages {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 100px 60px;
+    }
+
+    .packages__heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .packages__sub {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      letter-spacing: 0.12em;
+      margin-bottom: 60px;
+    }
+
+    .packages__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .package-card {
+      border: 1px solid var(--color-border);
+      padding: 48px 40px;
+      position: relative;
+      transition: border-color var(--transition);
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .package-card:nth-child(1) { animation-delay: 0.1s; }
+    .package-card:nth-child(2) { animation-delay: 0.25s; }
+    .package-card:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .package-card:hover {
+      border-color: var(--color-accent);
+    }
+
+    .package-card--featured {
+      border-color: var(--color-accent);
+      background: var(--color-surface);
+    }
+
+    .package-card__badge {
+      position: absolute;
+      top: -1px;
+      right: 24px;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+    }
+
+    .package-card__name {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 12px;
+    }
+
+    .package-card__price {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+
+    .package-card__price-unit {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      margin-bottom: 32px;
+    }
+
+    .package-card__divider {
+      width: 40px;
+      height: 1px;
+      background: var(--color-accent);
+      margin-bottom: 28px;
+    }
+
+    .package-card__desc {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .package-card__features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .package-card__features li {
+      font-size: 0.8rem;
+      color: var(--color-text);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .package-card__features li::before {
+      content: '—';
+      color: var(--color-accent);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .package-card__cta {
+      display: block;
+      margin-top: 40px;
+      text-align: center;
+      border: 1px solid var(--color-accent);
+      padding: 14px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .package-card__cta:hover {
+      background: var(--color-accent);
+      color: var(--color-bg);
+    }
+
+    .package-card--featured .package-card__cta {
+      background: var(--color-accent);
+      color: var(--color-bg);
+    }
+
+    .package-card--featured .package-card__cta:hover {
+      background: var(--color-accent-light);
+    }
+
+    /* ── Option / Add-on ── */
+    .addon {
+      border-top: 1px solid var(--color-border);
+      padding: 80px 60px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .addon__label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 16px;
+    }
+
+    .addon__card {
+      border: 1px solid var(--color-border);
+      padding: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .addon__name {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 300;
+    }
+
+    .addon__desc {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-top: 8px;
+    }
+
+    .addon__price {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--color-accent);
+      white-space: nowrap;
+    }
+
+    /* ── Note ── */
+    .product-note {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 60px 60px 100px;
+      text-align: center;
+    }
+
+    .product-note p {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      line-height: 2;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .packages__grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+    }
+
+    @media (max-width: 768px) {
+      .product-hero { padding: 80px 24px 40px; }
+      .packages { padding: 60px 24px; }
+      .addon { padding: 60px 24px; }
+      .product-note { padding: 40px 24px 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">NEWDAY<span>FILM</span></a>
+    <ul class="nav__links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="product.html" class="active">Product</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav__hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="nav__mobile" id="mobileMenu">
+    <span class="nav__mobile-close" id="mobileClose">✕</span>
+    <a href="about.html">About</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="product.html">Product</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="page-wrapper">
+
+    <section class="product-hero">
+      <p class="product-hero__label">Packages &amp; Pricing</p>
+      <h1 class="product-hero__title">Product</h1>
+    </section>
+
+    <!-- ============================================
+         PACKAGE CARDS
+         수정: 아래 JS productData 배열 수정
+         ============================================ -->
+    <section class="packages">
+      <h2 class="packages__heading">촬영 패키지</h2>
+      <p class="packages__sub">최선을 다해 소중한 날을 담아드립니다</p>
+      <div class="packages__grid" id="packagesGrid"></div>
+    </section>
+
+    <!-- ============================================
+         ADD-ON OPTION
+         수정: 옵션명, 설명, 가격
+         ============================================ -->
+    <section class="addon">
+      <p class="addon__label">Option</p>
+      <div class="addon__card">
+        <div>
+          <div class="addon__name">대표 지정 촬영</div>
+          <div class="addon__desc">원하시는 대표 감독을 지정하여 촬영 진행</div>
+        </div>
+        <div class="addon__price">330,000원</div>
+      </div>
+    </section>
+
+    <div class="product-note">
+      <p>
+        패키지 금액은 부가세 별도입니다.<br>
+        자세한 상담은 카카오톡 또는 전화로 문의해 주세요.
+      </p>
+    </div>
+
+    <footer class="footer">
+      <div>
+        <div class="footer__brand">NEWDAY FILM</div>
+        <div class="footer__copy">© 2024 Newday Film. All rights reserved.</div>
+      </div>
+      <div class="footer__newsletter">
+        <div class="footer__newsletter-form">
+          <input type="email" placeholder="이메일 주소" />
+          <button>구독</button>
+        </div>
+        <a href="https://www.instagram.com/newdayfilm/" class="footer__insta" target="_blank">
+          @newdayfilm
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    /* ============================================================
+       패키지 데이터
+       수정 방법:
+         - name: 패키지명
+         - price: 가격 (문자열)
+         - desc: 설명 (신부대기실~연회장 등)
+         - features: 포함 항목 배열
+         - featured: true 이면 강조 표시
+         - badge: 강조 라벨 (featured일 때)
+    ============================================================ */
+    const productData = [
+      {
+        name: 'BASIC',
+        price: '1,100,000원',
+        desc: '1인 2카메라 (신부대기실~연회장)',
+        features: [
+          '하이라이트 뮤비 영상',
+          '챕터별 다큐 영상',
+          '축사 및 축가 영상',
+          'USB 1개',
+        ],
+        featured: false,
+        badge: ''
+      },
+      {
+        name: 'PREMIUM',
+        price: '1,760,000원',
+        desc: '2인 3카메라 (신부대기실~연회장)',
+        features: [
+          '하이라이트 뮤비 영상',
+          '챕터별 다큐 영상',
+          '축사 및 축가 영상',
+          '모바일 영상 및 URL',
+          'USB 3개',
+        ],
+        featured: true,
+        badge: 'Most Popular'
+      }
+    ];
+
+    const grid = document.getElementById('packagesGrid');
+
+    productData.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'package-card' + (p.featured ? ' package-card--featured' : '');
+      card.innerHTML = `
+        ${p.badge ? `<div class="package-card__badge">${p.badge}</div>` : ''}
+        <div class="package-card__name">${p.name}</div>
+        <div class="package-card__price">${p.price}</div>
+        <div class="package-card__price-unit">${p.desc}</div>
+        <div class="package-card__divider"></div>
+        <ul class="package-card__features">
+          ${p.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+        <a href="contact.html" class="package-card__cta">문의하기</a>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Mobile menu
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.add('open');
+    });
+    document.getElementById('mobileClose').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.remove('open');
+    });
+  </script>
+</body>
+</html>

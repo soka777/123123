@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — NEWDAY FILM</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ============================================
+       ABOUT PAGE STYLES
+       수정: 텍스트, 연락처, 주소
+       ============================================ */
+
+    .about-hero {
+      padding: 100px 60px 60px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .about-hero__label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 24px;
+    }
+
+    .about-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--color-text);
+    }
+
+    /* ── Philosophy Block ── */
+    .philosophy {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 100px 60px;
+    }
+
+    .philosophy__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .philosophy__item {
+      padding: 40px 0;
+      border-top: 1px solid var(--color-border);
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .philosophy__item:nth-child(1) { animation-delay: 0.1s; }
+    .philosophy__item:nth-child(2) { animation-delay: 0.2s; }
+    .philosophy__item:nth-child(3) { animation-delay: 0.3s; }
+    .philosophy__item:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .philosophy__num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      color: var(--color-border);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .philosophy__text {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 1.5vw, 1.3rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+
+    /* ── Contact Info Block ── */
+    .about-contact {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: 80px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-contact__heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300;
+      color: var(--color-text);
+      margin-bottom: 8px;
+    }
+
+    .about-contact__sub {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .about-contact__details {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-item__label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 4px;
+    }
+
+    .contact-item__value {
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    /* ── Story Section ── */
+    .about-story {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 100px 60px;
+      text-align: center;
+    }
+
+    .about-story__heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 32px;
+      color: var(--color-text);
+    }
+
+    .about-story__text {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      line-height: 2;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .about-hero { padding: 80px 24px 40px; }
+      .philosophy { padding: 60px 24px; }
+      .philosophy__grid { grid-template-columns: 1fr; gap: 0; }
+      .about-contact { grid-template-columns: 1fr; padding: 60px 24px; }
+      .about-story { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">NEWDAY<span>FILM</span></a>
+    <ul class="nav__links">
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="product.html">Product</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav__hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="nav__mobile" id="mobileMenu">
+    <span class="nav__mobile-close" id="mobileClose">✕</span>
+    <a href="about.html">About</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="product.html">Product</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- ============================================
+         HERO
+         수정: 페이지 제목
+         ============================================ -->
+    <section class="about-hero">
+      <p class="about-hero__label">Our Story</p>
+      <h1 class="about-hero__title">About<br>Newday<br>Film</h1>
+    </section>
+
+    <!-- ============================================
+         PHILOSOPHY
+         수정: 4개의 철학 문구
+         ============================================ -->
+    <section class="philosophy">
+      <div class="philosophy__grid">
+
+        <div class="philosophy__item">
+          <div class="philosophy__num">01</div>
+          <p class="philosophy__text">
+            We take pride in our passion.<br>
+            We revel in our growth.<br>
+            As a team, we are in a relentless<br>
+            quest to raise the bar higher.
+          </p>
+        </div>
+
+        <div class="philosophy__item">
+          <div class="philosophy__num">02</div>
+          <p class="philosophy__text">
+            We are a group of dedicated artists<br>
+            who thrive in your love stories,<br>
+            and we consider it a great honor<br>
+            to be a part of them.
+          </p>
+        </div>
+
+        <div class="philosophy__item">
+          <div class="philosophy__num">03</div>
+          <p class="philosophy__text">
+            We believe that there is importance<br>
+            in every detail and we highlight<br>
+            the beauty that needs to be seen.
+          </p>
+        </div>
+
+        <div class="philosophy__item">
+          <div class="philosophy__num">04</div>
+          <p class="philosophy__text">
+            Every story is worth sharing<br>
+            and that is Newday Film's<br>
+            main obsession.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================
+         CONTACT INFO
+         수정: 이메일, 전화번호, 주소
+         ============================================ -->
+    <section class="about-contact">
+      <div>
+        <h2 class="about-contact__heading">언제든지<br>연락주세요</h2>
+        <p class="about-contact__sub">We'd love to hear from you</p>
+      </div>
+      <div class="about-contact__details">
+        <div>
+          <div class="contact-item__label">Email</div>
+          <!-- 수정: 이메일 -->
+          <div class="contact-item__value">newdayfilm@naver.com</div>
+        </div>
+        <div>
+          <div class="contact-item__label">Phone</div>
+          <!-- 수정: 전화번호 -->
+          <div class="contact-item__value">0507-1409-1060</div>
+        </div>
+        <div>
+          <div class="contact-item__label">Location</div>
+          <!-- 수정: 주소 -->
+          <div class="contact-item__value">서울특별시 영등포구 여의대방로 173</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         STORY
+         수정: 브랜드 스토리 문구
+         ============================================ -->
+    <section class="about-story">
+      <h2 class="about-story__heading">"Make it count."</h2>
+      <p class="about-story__text">
+        뉴데이필름은 13년 전 웨딩 업계에 첫 발을 내딛었습니다.<br>
+        13년이 지난 지금도 우리의 목표는 변하지 않았습니다.<br><br>
+        진정한 사랑과 영원한 헌신의 유대를 떠올리게 하는<br>
+        시대를 초월한 우아한 웨딩 영상을 만드는 것.<br><br>
+        그것이 뉴데이필름이 존재하는 이유입니다.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <div class="footer__brand">NEWDAY FILM</div>
+        <div class="footer__copy">© 2024 Newday Film. All rights reserved.</div>
+      </div>
+      <div class="footer__newsletter">
+        <div class="footer__newsletter-form">
+          <input type="email" placeholder="이메일 주소" />
+          <button>구독</button>
+        </div>
+        <a href="https://www.instagram.com/newdayfilm/" class="footer__insta" target="_blank">
+          @newdayfilm
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.add('open');
+    });
+    document.getElementById('mobileClose').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.remove('open');
+    });
+  </script>
+</body>
+</html>
