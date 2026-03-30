@@ -6,11 +6,6 @@
   <title>Portfolio — NEWDAY FILM</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* ============================================
-       PORTFOLIO PAGE STYLES
-       수정: 포트폴리오 항목 (JS 배열 videoData)
-       ============================================ */
-
     .portfolio-hero {
       padding: 100px 60px 60px;
       border-bottom: 1px solid var(--color-border);
@@ -37,7 +32,12 @@
       display: flex;
       gap: 0;
       border-bottom: 1px solid var(--color-border);
+      /* 모바일에서 탭이 넘칠 때 가로 스크롤 */
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .portfolio-filter::-webkit-scrollbar { display: none; }
 
     .filter-btn {
       background: none;
@@ -52,11 +52,11 @@
       cursor: pointer;
       transition: color var(--transition), border-color var(--transition);
       margin-bottom: -1px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .filter-btn:hover {
-      color: var(--color-text);
-    }
+    .filter-btn:hover { color: var(--color-text); }
 
     .filter-btn.active {
       color: var(--color-accent);
@@ -67,7 +67,7 @@
     .portfolio-grid {
       padding: 60px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 32px;
     }
 
@@ -75,10 +75,6 @@
       position: relative;
       cursor: pointer;
       overflow: hidden;
-    }
-
-    .video-card[data-category="hidden"] {
-      display: none;
     }
 
     .video-card__thumb {
@@ -112,6 +108,14 @@
 
     .video-card:hover .video-card__overlay {
       opacity: 1;
+    }
+
+    /* 모바일: 터치 기기는 hover 없으므로 항상 약하게 표시 */
+    @media (hover: none) {
+      .video-card__overlay {
+        opacity: 1;
+        background: rgba(14, 13, 11, 0.25);
+      }
     }
 
     .video-card__play {
@@ -165,6 +169,7 @@
       z-index: 2000;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
 
     .lightbox.open {
@@ -172,7 +177,7 @@
     }
 
     .lightbox__inner {
-      width: 90%;
+      width: 100%;
       max-width: 960px;
     }
 
@@ -185,7 +190,7 @@
 
     .lightbox__title {
       font-family: var(--font-display);
-      font-size: 1.4rem;
+      font-size: clamp(1rem, 3vw, 1.4rem);
       color: var(--color-text);
     }
 
@@ -194,6 +199,8 @@
       font-size: 1.2rem;
       color: var(--color-muted);
       transition: color var(--transition);
+      padding: 8px;
+      flex-shrink: 0;
     }
 
     .lightbox__close:hover { color: var(--color-accent); }
@@ -210,15 +217,30 @@
       border: none;
     }
 
+    /* 영상 없을 때 표시 */
+    .lightbox__empty {
+      display: none;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--color-surface);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      color: var(--color-muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 768px) {
       .portfolio-hero { padding: 80px 24px 40px; }
-      .portfolio-filter { padding: 0 24px; overflow-x: auto; }
-      .portfolio-grid { padding: 40px 24px; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .portfolio-filter { padding: 0 24px; }
+      .portfolio-grid { padding: 32px 24px; grid-template-columns: 1fr 1fr; gap: 16px; }
     }
 
     @media (max-width: 480px) {
-      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; gap: 20px; }
     }
   </style>
 </head>
@@ -252,10 +274,6 @@
       <h1 class="portfolio-hero__title">Portfolio</h1>
     </section>
 
-    <!-- ============================================
-         FILTER TABS
-         수정: 카테고리 추가/삭제 가능
-         ============================================ -->
     <div class="portfolio-filter">
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="shorts">Shorts</button>
@@ -263,12 +281,6 @@
       <button class="filter-btn" data-filter="chapter">Chapter</button>
     </div>
 
-    <!-- ============================================
-         VIDEO GRID
-         수정: JS 아래 videoData 배열을 수정하세요
-         각 항목: { title, category, thumb, duration, videoUrl }
-         videoUrl: 유튜브 embed URL 또는 비메오 embed URL
-         ============================================ -->
     <div class="portfolio-grid" id="portfolioGrid"></div>
 
     <!-- Lightbox -->
@@ -278,8 +290,12 @@
           <div class="lightbox__title" id="lightboxTitle"></div>
           <span class="lightbox__close" id="lightboxClose">✕</span>
         </div>
-        <div class="lightbox__video">
-          <iframe id="lightboxIframe" allowfullscreen allow="autoplay"></iframe>
+        <div class="lightbox__video" id="lightboxVideo">
+          <iframe id="lightboxIframe" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        </div>
+        <div class="lightbox__empty" id="lightboxEmpty">
+          <span style="font-size:2rem;">🎬</span>
+          <span>준비 중인 영상입니다</span>
         </div>
       </div>
     </div>
@@ -289,21 +305,46 @@
         <div class="footer__brand">NEWDAY FILM</div>
         <div class="footer__copy">© 2024 Newday Film. All rights reserved.</div>
       </div>
-  
-    
     </footer>
   </div>
 
   <script>
     /* ============================================================
+       유튜브 / 비메오 URL → embed URL 자동 변환
+       어떤 형식이든 붙여넣기만 하면 됩니다:
+         youtube.com/watch?v=ID  →  youtube.com/embed/ID  ✅
+         youtu.be/ID             →  youtube.com/embed/ID  ✅
+         youtube.com/embed/ID   →  그대로 사용           ✅
+         vimeo.com/ID            →  player.vimeo.com/...  ✅
+    ============================================================ */
+    function toEmbedUrl(url) {
+      if (!url) return '';
+
+      // 이미 embed 형식
+      if (url.includes('youtube.com/embed/') || url.includes('player.vimeo.com/video/')) {
+        return url;
+      }
+      // youtube.com/watch?v=
+      const ytWatch = url.match(/youtube\.com\/watch\?(?:.*&)?v=([a-zA-Z0-9_-]+)/);
+      if (ytWatch) return 'https://www.youtube.com/embed/' + ytWatch[1];
+
+      // youtu.be/
+      const ytShort = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+      if (ytShort) return 'https://www.youtube.com/embed/' + ytShort[1];
+
+      // vimeo.com/ID
+      const vimeo = url.match(/vimeo\.com\/(\d+)/);
+      if (vimeo) return 'https://player.vimeo.com/video/' + vimeo[1];
+
+      return url;
+    }
+
+    /* ============================================================
        포트폴리오 데이터
-       수정 방법:
-         - title: 영상 제목
-         - category: 'shorts' | 'highlight' | 'chapter'
-         - thumb: 썸네일 이미지 URL
-         - duration: 재생 시간 표시 (예: '01:06')
-         - videoUrl: 유튜브 embed → 'https://www.youtube.com/embed/VIDEO_ID'
-                     비메오 embed → 'https://player.vimeo.com/video/VIDEO_ID'
+       videoUrl: 유튜브 링크 아무 형식이나 붙여넣기 OK
+         'https://www.youtube.com/watch?v=XXXXX'  ← watch 링크
+         'https://youtu.be/XXXXX'                 ← 단축 링크
+         ''  ← 비워두면 "준비 중" 표시
     ============================================================ */
     const videoData = [
       {
@@ -379,7 +420,7 @@
       {
         title: '힐튼호텔 — Hilton Hotel',
         category: 'shorts',
-        thumb: 'https://images.squarespace-cdn.com/content/v1/66d6aea9d812b707c02b1715/945a2b93-3fc3-4108-b0c1-c6ddd490dd1e/20210221+%EB%B0%80%EB%A0%88%EB%8B%88%EC%97%84%ED%9E%90%ED%8A%BC.mp4_20240915_052740.105.jpg',
+        thumb: 'https://images.squarespace-cdn.com/content/v1/66d6aea9d812b707c02b1715/945a2b93-3fc3-4108-b0c1-c6ddd490dd1e/20210221+%EB%B0%80%EB%A0%88%EB%8B%88%EC%97%84%ED%9C%B4%ED%8A%B8.mp4_20240915_052740.105.jpg',
         duration: '00:59',
         videoUrl: ''
       },
@@ -444,23 +485,41 @@
     function openLightbox(v) {
       document.getElementById('lightboxTitle').textContent = v.title;
       const iframe = document.getElementById('lightboxIframe');
-      iframe.src = v.videoUrl ? v.videoUrl + '?autoplay=1' : '';
+      const videoBox = document.getElementById('lightboxVideo');
+      const emptyBox = document.getElementById('lightboxEmpty');
+      const embedUrl = toEmbedUrl(v.videoUrl);
+
+      if (embedUrl) {
+        // autoplay 파라미터 추가
+        const sep = embedUrl.includes('?') ? '&' : '?';
+        iframe.src = embedUrl + sep + 'autoplay=1';
+        videoBox.style.display = 'block';
+        emptyBox.style.display = 'none';
+      } else {
+        iframe.src = '';
+        videoBox.style.display = 'none';
+        emptyBox.style.display = 'flex';
+      }
+
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
-    document.getElementById('lightboxClose').addEventListener('click', () => {
+    function closeLightbox() {
       document.getElementById('lightbox').classList.remove('open');
       document.getElementById('lightboxIframe').src = '';
       document.body.style.overflow = '';
-    });
+    }
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
 
     document.getElementById('lightbox').addEventListener('click', function(e) {
-      if (e.target === this) {
-        this.classList.remove('open');
-        document.getElementById('lightboxIframe').src = '';
-        document.body.style.overflow = '';
-      }
+      if (e.target === this) closeLightbox();
+    });
+
+    // ESC 키로 닫기
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
     });
 
     // Filter
