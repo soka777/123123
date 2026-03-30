@@ -81,7 +81,7 @@ img {
   border-bottom: 1px solid var(--color-border);
   transition: background var(--transition);
   width: 1280px;
-  magin: 0 auto;
+  margin: 0 auto;
 }
 
 .nav__logo {
