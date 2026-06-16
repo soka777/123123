@@ -410,13 +410,16 @@
     const frame   = document.getElementById('ytFrame');
 
     if (overlay && frame) {
-      overlay.addEventListener('click', () => {
-        const src = frame.dataset.src;
-        frame.src = src.includes('autoplay') ? src : src + '&autoplay=1';
-        frame.addEventListener('load', () => frame.classList.add('loaded'), { once: true });
-        overlay.classList.add('hide');
-      });
+     overlay.addEventListener('click', () => {
+  const src = frame.dataset.src;
+  const separator = src.includes('?') ? '&' : '?';
+  frame.src = src.includes('autoplay') ? src : src + separator + 'autoplay=1';
+  frame.addEventListener('load', () => frame.classList.add('loaded'), { once: true });
+  overlay.classList.add('hide');
+});
     }
+
+    
 
     // ── Hero Slideshow ──
     const slides        = document.querySelectorAll('.hero__slide');
